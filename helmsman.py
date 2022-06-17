@@ -14,7 +14,7 @@ import subprocess
 import numpy as np
 # from joblib import Parallel, delayed
 sys.path.append(os.getcwd())
-import util
+import helmsman.util
 
 
 def main():
@@ -277,8 +277,8 @@ def main():
         # ignore warning about covariance matrix not being full rank
         warnings.filterwarnings("ignore", category=UserWarning)
 
-    util.util_log.setLevel(loglev)
-    log = util.get_logger("helmsman", level=loglev)
+    helmsman.util.util_log.setLevel(loglev)
+    log = helmsman.util.get_logger("helmsman", level=loglev)
 
     log.info("----------------------------------")
     try:
@@ -321,12 +321,12 @@ def main():
     #-----------------------------------------------------------------------------
     # index subtypes
     #-----------------------------------------------------------------------------
-    subtypes_dict = util.indexSubtypes(args.length)
+    subtypes_dict = helmsman.util.indexSubtypes(args.length)
 
     #-----------------------------------------------------------------------------
     # Build M matrix from inputs
     #-----------------------------------------------------------------------------
-    data_in = util.processInput(args.mode, args, subtypes_dict)
+    data_in = helmsman.util.processInput(args.mode, args, subtypes_dict)
     data = data_in.data
     count_matrix = data.M
     samples = np.array([data.samples], dtype=str)
@@ -369,7 +369,7 @@ def main():
         'H_path': projdir + "/H_loadings.txt"
     }
 
-    dat_out = util.writeOutput(paths, samples, subtypes_dict)
+    dat_out = helmsman.util.writeOutput(paths, samples, subtypes_dict)
 
     try:
         dat_out.writeM(count_matrix)
@@ -380,7 +380,7 @@ def main():
         log.warning("could not write W matrix")
 
     if args.decomp is not None:
-        decomp_data = util.DecompModel(count_matrix, args.rank, args.seed,
+        decomp_data = helmsman.util.DecompModel(count_matrix, args.rank, args.seed,
                                        args.decomp)
 
         try:
@@ -398,7 +398,7 @@ def main():
     # auto-generate R script to pass data to MSA packages
     #-----------------------------------------------------------------------------
     if args.package:
-        util.writeR(args.package, args.projectdir, args.matrixname)
+        helmsman.util.writeR(args.package, args.projectdir, args.matrixname)
         log_message = "To use this mutation spectra matrix" + \
             "with the {} R package, ".format(args.package) + \
             "run the following command in R: \n" + \
