@@ -364,7 +364,7 @@ class processInput:
         chr_check = "none"
 
         for record in vcf_reader:
-
+           
             # Filter by SNP status, # alt alleles, and FILTER column
             if (not record.is_snp or len(record.ALT) != 1
                     or record.FILTER is not None):
@@ -372,9 +372,9 @@ class processInput:
                 continue
 
             # Filter by allele count
-            if record.INFO['AC'] > self.args.maxac > 0:
-                numsites_skip += 1
-                continue
+            #if record.INFO['AC'] > self.args.maxac > 0:
+                #numsites_skip += 1
+                #continue
 
             row_chr = record.CHROM
 
